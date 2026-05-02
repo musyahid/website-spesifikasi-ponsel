@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PhoneSpec ID - Spesifikasi Ponsel Terlengkap</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+  <style>
+    :root {
+      --primary: #1a73e8;
+      --primary-dark: #1558b0;
+      --accent: #fbbc04;
+      --text-muted: #6c757d;
+      --card-border: #e0e0e0;
+    }
+    body { font-family: 'Segoe UI', sans-serif; background: #f8f9fa; color: #212529; }
+
+    /* Navbar */
+    .navbar { background: var(--primary); }
+    .navbar-brand { font-weight: 700; font-size: 1.4rem; color: #fff !important; letter-spacing: -0.5px; }
+    .navbar-brand span { color: var(--accent); }
+    .navbar .nav-link { color: rgba(255,255,255,.85) !important; font-size: .92rem; }
+    .navbar .nav-link:hover { color: #fff !important; }
+    .search-bar { max-width: 380px; }
+    .search-bar input { border-radius: 20px 0 0 20px; border: none; }
+    .search-bar button { border-radius: 0 20px 20px 0; background: var(--accent); border: none; color: #212529; font-weight: 600; }
+
+    /* Ad Banner */
+    .ad-banner {
+      background: linear-gradient(135deg, #e8f0fe, #d2e3fc);
+      border: 2px dashed #aac4f5;
+      border-radius: 8px;
+      text-align: center;
+      padding: 18px;
+      color: #5f6368;
+      font-size: .85rem;
+    }
+    .ad-banner .ad-label { font-size: .7rem; text-transform: uppercase; letter-spacing: 1px; color: #999; }
+
+    /* Brand Filter */
+    .brand-filter { background: #fff; border-radius: 10px; box-shadow: 0 1px 6px rgba(0,0,0,.08); padding: 16px 20px; }
+    .brand-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 6px 14px; border-radius: 20px; border: 1.5px solid #dee2e6;
+      background: #fff; font-size: .85rem; font-weight: 500; color: #444;
+      text-decoration: none; transition: all .2s;
+    }
+    .brand-btn:hover, .brand-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+    .brand-btn .count { font-size: .75rem; color: inherit; opacity: .7; }
+
+    /* Phone Card */
+    .phone-card {
+      background: #fff; border-radius: 10px;
+      box-shadow: 0 1px 6px rgba(0,0,0,.07);
+      border: 1px solid var(--card-border);
+      transition: transform .2s, box-shadow .2s;
+      overflow: hidden;
+    }
+    .phone-card:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(0,0,0,.12); }
+    .phone-card img { width: 100%; height: 180px; object-fit: contain; background: #f5f5f5; padding: 12px; }
+    .phone-card .card-body { padding: 12px 14px; }
+    .phone-card .phone-name { font-weight: 600; font-size: .95rem; margin-bottom: 4px; color: #212529; }
+    .phone-card .phone-meta { font-size: .8rem; color: var(--text-muted); }
+    .phone-card .badge-new { background: #e8f5e9; color: #2e7d32; font-size: .7rem; padding: 2px 7px; border-radius: 10px; font-weight: 600; }
+    .phone-card .spec-tag { font-size: .75rem; background: #f1f3f4; color: #444; padding: 2px 8px; border-radius: 4px; display: inline-block; margin: 2px 2px 0 0; }
+    .phone-card .btn-detail { font-size: .82rem; padding: 5px 14px; border-radius: 20px; }
+
+    /* Section heading */
+    .section-title { font-weight: 700; font-size: 1.1rem; border-left: 4px solid var(--primary); padding-left: 10px; margin-bottom: 16px; }
+
+    /* Sidebar */
+    .sidebar-widget { background: #fff; border-radius: 10px; box-shadow: 0 1px 6px rgba(0,0,0,.07); padding: 16px; margin-bottom: 20px; }
+    .sidebar-widget h6 { font-weight: 700; font-size: .9rem; margin-bottom: 12px; }
+    .popular-item { display: flex; gap: 10px; align-items: center; padding: 8px 0; border-bottom: 1px solid #f0f0f0; }
+    .popular-item:last-child { border-bottom: none; }
+    .popular-item img { width: 42px; height: 42px; object-fit: contain; background: #f5f5f5; border-radius: 6px; }
+    .popular-item .info { font-size: .82rem; }
+    .popular-item .info .name { font-weight: 600; color: #212529; }
+    .popular-item .info .meta { color: var(--text-muted); font-size: .75rem; }
+
+    /* Top brands logos */
+    .brand-logo-box { text-align: center; padding: 10px; border: 1px solid #dee2e6; border-radius: 8px; cursor: pointer; transition: all .2s; }
+    .brand-logo-box:hover { border-color: var(--primary); background: #e8f0fe; }
+    .brand-logo-box .logo-text { font-weight: 700; font-size: .85rem; color: #444; }
+    .brand-logo-box .count-text { font-size: .72rem; color: var(--text-muted); }
+
+    /* Cookie Consent */
+    #cookie-consent {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 9999;
+      background: #1e1e1e; color: #e0e0e0;
+      padding: 16px 24px;
+      box-shadow: 0 -4px 20px rgba(0,0,0,.3);
+    }
+    #cookie-consent a { color: var(--accent); }
+    #cookie-consent .btn-accept { background: var(--primary); color: #fff; border: none; border-radius: 6px; padding: 8px 20px; font-weight: 600; }
+    #cookie-consent .btn-settings { background: transparent; color: #ccc; border: 1px solid #555; border-radius: 6px; padding: 8px 20px; }
+
+    /* Footer */
+    footer { background: #1e2a3a; color: #adb5bd; font-size: .88rem; padding: 40px 0 20px; }
+    footer h6 { color: #e9ecef; font-weight: 600; margin-bottom: 12px; }
+    footer a { color: #adb5bd; text-decoration: none; display: block; margin-bottom: 6px; }
+    footer a:hover { color: #fff; }
+    .footer-brand { font-size: 1.3rem; font-weight: 700; color: #fff; margin-bottom: 8px; }
+    .footer-brand span { color: var(--accent); }
+    .footer-bottom { border-top: 1px solid #2d3e50; padding-top: 16px; margin-top: 24px; font-size: .8rem; }
+  </style>
+</head>
+<body x-data="{ cookieAccepted: localStorage.getItem('cookie_accepted') === 'true' }"
+      xmlns:x="http://www.w3.org/1999/xhtml">
+
+<!-- ===== NAVBAR ===== -->
+<nav class="navbar navbar-expand-lg py-2 sticky-top">
+  <div class="container">
+    <a class="navbar-brand" href="index.html">Phone<span>Spec</span> ID</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+      <span class="navbar-toggler-icon" style="filter:invert(1)"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="mainNav">
+      <div class="search-bar input-group mx-auto my-2 my-lg-0">
+        <input type="text" class="form-control" placeholder="Cari nama ponsel..." />
+        <button type="button"><i class="bi bi-search"></i></button>
+      </div>
+      <ul class="navbar-nav ms-auto gap-1">
+        <li class="nav-item"><a class="nav-link" href="index.html"><i class="bi bi-house-fill"></i> Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="#brands">Merek</a></li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Lainnya</a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="contact.html"><i class="bi bi-envelope me-2"></i>Contact Us</a></li>
+            <li><a class="dropdown-item" href="privacy.html"><i class="bi bi-shield-check me-2"></i>Privacy Policy</a></li>
+            <li><a class="dropdown-item" href="terms.html"><i class="bi bi-file-text me-2"></i>Terms of Use</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- ===== AD BANNER TOP ===== -->
+<div class="container mt-3">
+  <div class="ad-banner">
+    <div class="ad-label">Advertisement</div>
+    <div style="height:70px;display:flex;align-items:center;justify-content:center;gap:8px;">
+      <i class="bi bi-image" style="font-size:1.5rem;opacity:.4"></i>
+      <span>Google AdSense Banner (728×90 Leaderboard)</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MAIN CONTENT ===== -->
+<div class="container mt-4">
+  <div class="row g-4">
+
+    <!-- LEFT: Main Content -->
+    <div class="col-lg-8">
+
+      <!-- Brand Filter -->
+      <div class="brand-filter mb-4" id="brands">
+        <div class="d-flex align-items-center justify-content-between mb-3">
+          <span class="section-title mb-0">Filter by Merek</span>
+          <a href="#" class="text-primary small">Lihat Semua</a>
+        </div>
+        <div class="d-flex flex-wrap gap-2">
+          <a href="#" class="brand-btn active">Semua <span class="count">(1240)</span></a>
+          <a href="#" class="brand-btn">Samsung <span class="count">(342)</span></a>
+          <a href="#" class="brand-btn">Apple <span class="count">(89)</span></a>
+          <a href="#" class="brand-btn">Xiaomi <span class="count">(215)</span></a>
+          <a href="#" class="brand-btn">OPPO <span class="count">(178)</span></a>
+          <a href="#" class="brand-btn">Vivo <span class="count">(156)</span></a>
+          <a href="#" class="brand-btn">Realme <span class="count">(134)</span></a>
+          <a href="#" class="brand-btn">OnePlus <span class="count">(67)</span></a>
+          <a href="#" class="brand-btn">Google <span class="count">(28)</span></a>
+          <a href="#" class="brand-btn">Nothing <span class="count">(12)</span></a>
+        </div>
+      </div>
+
+      <!-- Latest Phones -->
+      <div class="section-title">Ponsel Terbaru</div>
+      <div class="row g-3 mb-4">
+
+        <!-- Phone Card 1 -->
+        <div class="col-sm-6 col-md-4">
+          <div class="phone-card h-100">
+            <img src="https://placehold.co/300x200?text=Samsung+S25" alt="Samsung Galaxy S25" />
+            <div class="card-body d-flex flex-column">
+              <div class="d-flex justify-content-between align-items-start mb-1">
+                <span class="phone-name">Samsung Galaxy S25</span>
+                <span class="badge-new">Baru</span>
+              </div>
+              <div class="phone-meta mb-2">Samsung · 2025</div>
+              <div class="mb-auto">
+                <span class="spec-tag">6.2" AMOLED</span>
+                <span class="spec-tag">Snapdragon 8 Elite</span>
+                <span class="spec-tag">50MP</span>
+                <span class="spec-tag">4000mAh</span>
+              </div>
+              <a href="detail.html" class="btn btn-outline-primary btn-detail mt-3 w-100">Lihat Spesifikasi</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Phone Card 2 -->
+        <div class="col-sm-6 col-md-4">
+          <div class="phone-card h-100">
+            <img src="https://placehold.co/300x200?text=iPhone+16+Pro" alt="iPhone 16 Pro" />
+            <div class="card-body d-flex flex-column">
+              <div class="d-flex justify-content-between align-items-start mb-1">
+                <span class="phone-name">Apple iPhone 16 Pro</span>
+                <span class="badge-new">Baru</span>
+              </div>
+              <div class="phone-meta mb-2">Apple · 2024</div>
+              <div class="mb-auto">
+                <span class="spec-tag">6.3" ProMotion</span>
+                <span class="spec-tag">A18 Pro</span>
+                <span class="spec-tag">48MP</span>
+                <span class="spec-tag">4685mAh</span>
+              </div>
+              <a href="detail.html" class="btn btn-outline-primary btn-detail mt-3 w-100">Lihat Spesifikasi</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Phone Card 3 -->
+        <div class="col-sm-6 col-md-4">
+          <div class="phone-card h-100">
+            <img src="https://placehold.co/300x200?text=Xiaomi+15" alt="Xiaomi 15" />
+            <div class="card-body d-flex flex-column">
+              <div class="d-flex justify-content-between align-items-start mb-1">
+                <span class="phone-name">Xiaomi 15</span>
+              </div>
+              <div class="phone-meta mb-2">Xiaomi · 2025</div>
+              <div class="mb-auto">
+                <span class="spec-tag">6.36" AMOLED</span>
+                <span class="spec-tag">Snapdragon 8 Elite</span>
+                <span class="spec-tag">50MP Leica</span>
+                <span class="spec-tag">5240mAh</span>
+              </div>
+              <a href="detail.html" class="btn btn-outline-primary btn-detail mt-3 w-100">Lihat Spesifikasi</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Phone Card 4 -->
+        <div class="col-sm-6 col-md-4">
+          <div class="phone-card h-100">
+            <img src="https://placehold.co/300x200?text=OPPO+Find+X8" alt="OPPO Find X8" />
+            <div class="card-body d-flex flex-column">
+              <span class="phone-name mb-1">OPPO Find X8 Pro</span>
+              <div class="phone-meta mb-2">OPPO · 2024</div>
+              <div class="mb-auto">
+                <span class="spec-tag">6.78" AMOLED</span>
+                <span class="spec-tag">Dimensity 9400</span>
+                <span class="spec-tag">50MP Hasselblad</span>
+                <span class="spec-tag">5910mAh</span>
+              </div>
+              <a href="detail.html" class="btn btn-outline-primary btn-detail mt-3 w-100">Lihat Spesifikasi</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Phone Card 5 -->
+        <div class="col-sm-6 col-md-4">
+          <div class="phone-card h-100">
+            <img src="https://placehold.co/300x200?text=Vivo+X200+Pro" alt="Vivo X200 Pro" />
+            <div class="card-body d-flex flex-column">
+              <span class="phone-name mb-1">Vivo X200 Pro</span>
+              <div class="phone-meta mb-2">Vivo · 2024</div>
+              <div class="mb-auto">
+                <span class="spec-tag">6.78" LTPO AMOLED</span>
+                <span class="spec-tag">Dimensity 9400</span>
+                <span class="spec-tag">200MP Zeiss</span>
+                <span class="spec-tag">6000mAh</span>
+              </div>
+              <a href="detail.html" class="btn btn-outline-primary btn-detail mt-3 w-100">Lihat Spesifikasi</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Phone Card 6 -->
+        <div class="col-sm-6 col-md-4">
+          <div class="phone-card h-100">
+            <img src="https://placehold.co/300x200?text=Realme+GT+7+Pro" alt="Realme GT 7 Pro" />
+            <div class="card-body d-flex flex-column">
+              <span class="phone-name mb-1">Realme GT 7 Pro</span>
+              <div class="phone-meta mb-2">Realme · 2024</div>
+              <div class="mb-auto">
+                <span class="spec-tag">6.78" AMOLED</span>
+                <span class="spec-tag">Snapdragon 8 Elite</span>
+                <span class="spec-tag">50MP</span>
+                <span class="spec-tag">6500mAh</span>
+              </div>
+              <a href="detail.html" class="btn btn-outline-primary btn-detail mt-3 w-100">Lihat Spesifikasi</a>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /row -->
+
+      <!-- Ad Banner Mid -->
+      <div class="ad-banner mb-4">
+        <div class="ad-label">Advertisement</div>
+        <div style="height:90px;display:flex;align-items:center;justify-content:center;gap:8px;">
+          <i class="bi bi-image" style="font-size:1.5rem;opacity:.4"></i>
+          <span>Google AdSense Banner (728×90 / Responsive)</span>
+        </div>
+      </div>
+
+      <!-- Mid-range Phones -->
+      <div class="section-title">Ponsel Menengah Terpopuler</div>
+      <div class="row g-3 mb-4">
+        <div class="col-sm-6 col-md-4">
+          <div class="phone-card h-100">
+            <img src="https://placehold.co/300x200?text=Samsung+A56" alt="Samsung A56" />
+            <div class="card-body d-flex flex-column">
+              <span class="phone-name mb-1">Samsung Galaxy A56</span>
+              <div class="phone-meta mb-2">Samsung · 2025</div>
+              <div class="mb-auto">
+                <span class="spec-tag">6.7" Super AMOLED</span>
+                <span class="spec-tag">Exynos 1580</span>
+                <span class="spec-tag">50MP</span>
+                <span class="spec-tag">5000mAh</span>
+              </div>
+              <a href="detail.html" class="btn btn-outline-primary btn-detail mt-3 w-100">Lihat Spesifikasi</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-4">
+          <div class="phone-card h-100">
+            <img src="https://placehold.co/300x200?text=Redmi+Note+14" alt="Redmi Note 14" />
+            <div class="card-body d-flex flex-column">
+              <span class="phone-name mb-1">Redmi Note 14 Pro+</span>
+              <div class="phone-meta mb-2">Xiaomi · 2024</div>
+              <div class="mb-auto">
+                <span class="spec-tag">6.67" AMOLED</span>
+                <span class="spec-tag">Dimensity 9200+</span>
+                <span class="spec-tag">200MP</span>
+                <span class="spec-tag">5110mAh</span>
+              </div>
+              <a href="detail.html" class="btn btn-outline-primary btn-detail mt-3 w-100">Lihat Spesifikasi</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-4">
+          <div class="phone-card h-100">
+            <img src="https://placehold.co/300x200?text=Nothing+Phone+3a" alt="Nothing Phone 3a" />
+            <div class="card-body d-flex flex-column">
+              <span class="phone-name mb-1">Nothing Phone (3a)</span>
+              <div class="phone-meta mb-2">Nothing · 2025</div>
+              <div class="mb-auto">
+                <span class="spec-tag">6.77" OLED</span>
+                <span class="spec-tag">Snapdragon 7s Gen 3</span>
+                <span class="spec-tag">50MP</span>
+                <span class="spec-tag">5000mAh</span>
+              </div>
+              <a href="detail.html" class="btn btn-outline-primary btn-detail mt-3 w-100">Lihat Spesifikasi</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pagination -->
+      <nav class="d-flex justify-content-center mt-2 mb-4">
+        <ul class="pagination">
+          <li class="page-item disabled"><a class="page-link" href="#">&laquo;</a></li>
+          <li class="page-item active"><a class="page-link" href="#">1</a></li>
+          <li class="page-item"><a class="page-link" href="#">2</a></li>
+          <li class="page-item"><a class="page-link" href="#">3</a></li>
+          <li class="page-item"><a class="page-link" href="#">4</a></li>
+          <li class="page-item"><a class="page-link" href="#">5</a></li>
+          <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
+        </ul>
+      </nav>
+
+    </div><!-- /col-lg-8 -->
+
+    <!-- RIGHT: Sidebar -->
+    <div class="col-lg-4">
+
+      <!-- Ad Sidebar -->
+      <div class="ad-banner mb-4">
+        <div class="ad-label">Advertisement</div>
+        <div style="height:250px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;">
+          <i class="bi bi-image" style="font-size:2rem;opacity:.4"></i>
+          <span>AdSense (300×250)</span>
+        </div>
+      </div>
+
+      <!-- Popular Phones -->
+      <div class="sidebar-widget">
+        <h6><i class="bi bi-fire text-danger me-2"></i>Paling Banyak Dicari</h6>
+        <div class="popular-item">
+          <img src="https://placehold.co/42x42?text=S25" alt="S25" />
+          <div class="info">
+            <div class="name">Samsung Galaxy S25</div>
+            <div class="meta">Snapdragon 8 Elite · 6.2"</div>
+          </div>
+        </div>
+        <div class="popular-item">
+          <img src="https://placehold.co/42x42?text=IP16" alt="iPhone 16" />
+          <div class="info">
+            <div class="name">iPhone 16 Pro Max</div>
+            <div class="meta">A18 Pro · 6.9"</div>
+          </div>
+        </div>
+        <div class="popular-item">
+          <img src="https://placehold.co/42x42?text=Mi15" alt="Xiaomi 15" />
+          <div class="info">
+            <div class="name">Xiaomi 15 Ultra</div>
+            <div class="meta">Snapdragon 8 Elite · 6.73"</div>
+          </div>
+        </div>
+        <div class="popular-item">
+          <img src="https://placehold.co/42x42?text=RN14" alt="Redmi Note 14" />
+          <div class="info">
+            <div class="name">Redmi Note 14 Pro</div>
+            <div class="meta">Dimensity 9200+ · 6.67"</div>
+          </div>
+        </div>
+        <div class="popular-item">
+          <img src="https://placehold.co/42x42?text=A56" alt="A56" />
+          <div class="info">
+            <div class="name">Samsung Galaxy A56</div>
+            <div class="meta">Exynos 1580 · 6.7"</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Top Brands -->
+      <div class="sidebar-widget">
+        <h6><i class="bi bi-grid me-2 text-primary"></i>Merek Populer</h6>
+        <div class="row g-2">
+          <div class="col-4"><div class="brand-logo-box"><div class="logo-text">Samsung</div><div class="count-text">342 hp</div></div></div>
+          <div class="col-4"><div class="brand-logo-box"><div class="logo-text">Apple</div><div class="count-text">89 hp</div></div></div>
+          <div class="col-4"><div class="brand-logo-box"><div class="logo-text">Xiaomi</div><div class="count-text">215 hp</div></div></div>
+          <div class="col-4"><div class="brand-logo-box"><div class="logo-text">OPPO</div><div class="count-text">178 hp</div></div></div>
+          <div class="col-4"><div class="brand-logo-box"><div class="logo-text">Vivo</div><div class="count-text">156 hp</div></div></div>
+          <div class="col-4"><div class="brand-logo-box"><div class="logo-text">Realme</div><div class="count-text">134 hp</div></div></div>
+        </div>
+      </div>
+
+      <!-- Ad Sidebar 2 -->
+      <div class="ad-banner">
+        <div class="ad-label">Advertisement</div>
+        <div style="height:200px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;">
+          <i class="bi bi-image" style="font-size:2rem;opacity:.4"></i>
+          <span>AdSense (300×200)</span>
+        </div>
+      </div>
+
+    </div><!-- /sidebar -->
+  </div><!-- /row -->
+</div><!-- /container -->
+
+<!-- ===== FOOTER ===== -->
+<footer class="mt-5">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="footer-brand">Phone<span>Spec</span> ID</div>
+        <p class="small">Situs spesifikasi ponsel terlengkap dan terpercaya di Indonesia. Data diperbarui secara rutin.</p>
+      </div>
+      <div class="col-md-2">
+        <h6>Navigasi</h6>
+        <a href="index.html">Beranda</a>
+        <a href="#brands">Semua Merek</a>
+        <a href="#">Perbandingan</a>
+      </div>
+      <div class="col-md-2">
+        <h6>Informasi</h6>
+        <a href="contact.html">Contact Us</a>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Use</a>
+      </div>
+      <div class="col-md-4">
+        <h6>Merek Populer</h6>
+        <div class="d-flex flex-wrap gap-2">
+          <a href="#">Samsung</a><a href="#">Apple</a><a href="#">Xiaomi</a>
+          <a href="#">OPPO</a><a href="#">Vivo</a><a href="#">Realme</a>
+          <a href="#">OnePlus</a><a href="#">Google</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom text-center">
+      &copy; 2025 PhoneSpec ID. Seluruh spesifikasi bersumber dari data publik produsen.
+    </div>
+  </div>
+</footer>
+
+<!-- ===== COOKIE CONSENT (Alpine.js) ===== -->
+<div id="cookie-consent"
+     x-data="{ show: !localStorage.getItem('cookie_accepted') }"
+     x-show="show"
+     x-transition:enter="transition ease-out duration-300"
+     x-transition:enter-start="opacity-0 translate-y-4"
+     x-transition:enter-end="opacity-100 translate-y-0"
+     xmlns:x="http://www.w3.org/1999/xhtml">
+  <div class="container">
+    <div class="d-flex flex-column flex-md-row align-items-md-center gap-3">
+      <div class="flex-grow-1">
+        <i class="bi bi-cookie text-warning me-2"></i>
+        <strong>Kebijakan Cookie</strong> &mdash; Kami menggunakan cookie untuk meningkatkan pengalaman Anda, menampilkan iklan yang relevan, dan menganalisis trafik. Dengan melanjutkan, Anda menyetujui
+        <a href="privacy.html">Kebijakan Privasi</a> kami.
+      </div>
+      <div class="d-flex gap-2 flex-shrink-0">
+        <button class="btn-settings" @click="show = false">Kelola Preferensi</button>
+        <button class="btn-accept" @click="localStorage.setItem('cookie_accepted','true'); show = false">
+          <i class="bi bi-check-lg me-1"></i>Terima Semua
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js" defer></script>
+</body>
+</html>
