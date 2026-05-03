@@ -1,0 +1,23 @@
+[Relist] Membuat Website Spesifikasi Ponsel
+ 
+Hi Freelancer,
+
+Kali ini saya perlu bantuan anda untuk pembuatan web spesifikasi ponsel.
+
+Referensi: https://www.gsmarena.com/
+
+Tidak perlu fitur blog.
+Ada page untuk term and use, privacy, contact us
+Ada banner image/code adsense untuk iklan, sehingga perlu space di webnya
+Ada popup cookie policy, biasa adsense mensyaratkan itu.
+
+Tech stack
+Leaf MVC, https://leafphp.dev/docs/mvc/. G populer, tapi ORM pakai eloquent, view pakai blade. Terinspirasi laravel
+styling css : bootstrap / tailwind
+jquery / alpine js
+
+Akan dideploy di shared hosting.
+
+
+Silahkan ajukan penawaran dengan portofolio web yang pernah dibuat.
+Note: Saya lebih suka penawaran yang menjelaskan konsep bagaimana anda menyelesaikan project ini, atau dengan harga yang anda tawarkan, apa yang anda kerjakan. 
